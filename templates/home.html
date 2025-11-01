@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hind-Cap - Hindi Caption & Translation Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(ellipse at 10% 10%, rgba(146, 163, 255, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 90% 20%, rgba(255, 139, 214, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 90%, rgba(100, 220, 255, 0.15) 0%, transparent 60%),
+                linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .bg-1 {
+            width: 300px;
+            height: 300px;
+            background: #667eea;
+            top: 10%;
+            left: 5%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .bg-2 {
+            width: 400px;
+            height: 400px;
+            background: #764ba2;
+            bottom: 10%;
+            right: 5%;
+            animation: float 25s infinite ease-in-out reverse;
+        }
+
+        .bg-3 {
+            width: 200px;
+            height: 200px;
+            background: #ff8bd6;
+            top: 50%;
+            left: 80%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(0) translateX(20px); }
+            75% { transform: translateY(20px) translateX(10px); }
+        }
+
+        .card {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 90px rgba(0,0,0,0.6);
+        }
+
+        .header {
+            padding: 56px 64px 32px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+            position: relative;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: grid;
+            place-items: center;
+            font-size: 28px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            padding: 0 64px;
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin: 24px 0 32px;
+            font-size: 18px;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .grid {
+            padding: 0 64px 48px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .feature:hover::before {
+            opacity: 1;
+        }
+
+        .feature h4 {
+            color: #e2e8f0;
+            margin-bottom: 12px;
+            font-size: 18px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta {
+            padding: 32px 64px 56px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            appearance: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            border-radius: 14px;
+            padding: 16px 28px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            box-shadow: 0 12px 30px rgba(102,126,234,0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(102,126,234,0.45);
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+
+        .btn-secondary {
+            background: rgba(148,163,184,0.12);
+            color: #cbd5e1;
+            border: 1px solid rgba(148,163,184,0.18);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(148,163,184,0.18);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .footer {
+            padding: 0 64px 40px;
+            color: #64748b;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Demo video preview */
+        .demo-preview {
+            margin: 0 64px 40px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(148, 163, 184, 0.12);
+        }
+
+        .demo-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .demo-text {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .demo-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #e2e8f0;
+        }
+
+        .demo-subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .play-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            color: #667eea;
+        }
+
+        .translation-demo {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .language-box {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .language-title {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .translation-text {
+            font-size: 16px;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .hindi-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 18px;
+        }
+
+        .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .header, .subtitle, .grid, .cta, .footer, .demo-preview {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .header {
+                padding-top: 40px;
+                padding-bottom: 24px;
+            }
+
+            .title {
+                font-size: 28px;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .translation-demo {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cta {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background elements -->
+    <div class="bg-element bg-1"></div>
+    <div class="bg-element bg-2"></div>
+    <div class="bg-element bg-3"></div>
+
+    <div class="card">
+        <div class="header">
+            <div class="logo"><i class="fas fa-closed-captioning"></i></div>
+            <div class="title">Hind-Cap</div>
+        </div>
+
+        <p class="subtitle">
+            Transform your Hindi videos into accessible content with perfectly timed captions and translations.
+            Support for Hindi-to-English translation with intelligent audio synchronization.
+        </p>
+
+        <div class="demo-preview">
+            <div class="demo-text">
+                <div class="play-icon"><i class="fas fa-play"></i></div>
+                <div class="demo-title">See Hind-Cap in Action</div>
+                <div class="demo-subtitle">Watch how we transform Hindi videos with captions and translations</div>
+
+                <div class="translation-demo">
+                    <div class="language-box">
+                        <div class="language-title">Hindi Caption</div>
+                        <div class="translation-text hindi-text">यह एक उदाहरण कैप्शन है</div>
+                    </div>
+                    <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                    <div class="language-box">
+                        <div class="language-title">English Translation</div>
+                        <div class="translation-text">This is an example caption</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="feature">
+                <h4><i class="fas fa-clock"></i> Accurate Timing</h4>
+                <p>Subtitles intelligently chunked and synced to your audio for natural reading flow.</p>
+            </div>
+            <div class="feature">
+                <h4><i class="fas fa-font"></i> Unicode Fonts</h4>
+                <p>Beautiful rendering in English and Hindi with proper font fallback support.</p>
+            </div>
+            <div class="feature">
+                <h4><i class="fas fa-layer-group"></i> Clean Overlay</h4>
+                <p>Captions stay compact at the bottom so your visual content remains the focus.</p>
+            </div>
+            <div class="feature">
+                <h4><i class="fas fa-language"></i> Hindi Translation</h4>
+                <p>Automatically translate Hindi captions to English with accurate context preservation.</p>
+            </div>
+            <div class="feature">
+                <h4><i class="fas fa-download"></i> Instant Downloads</h4>
+                <p>Get a fully captioned MP4 file ready to share across all platforms.</p>
+            </div>
+            <div class="feature">
+                <h4><i class="fas fa-sync-alt"></i> Dual Subtitles</h4>
+                <p>Display both Hindi and English subtitles simultaneously for language learners.</p>
+            </div>
+        </div>
+
+        <div class="cta">
+            <a class="btn btn-primary" href="/add-captions">
+                <i class="fas fa-plus"></i> Add captions to a video
+            </a>
+            <a class="btn btn-secondary" href="https://github.com/" target="_blank" rel="noopener">
+                <i class="fas fa-book"></i> Documentation
+            </a>
+        </div>
+
+        <div class="footer">Powered by Flask + MoviePy • Keep your browser open during processing for best results.</div>
+    </div>
+</body>
+</html>
