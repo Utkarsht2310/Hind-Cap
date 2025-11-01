@@ -1,0 +1,17 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+*.log
+.git
+.gitignore
+static/uploads/*
+static/outputs/*
+static/temp/*
+.DS_Store
+*.wav
+*.m4a
+

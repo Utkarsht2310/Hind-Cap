@@ -88,6 +88,26 @@ caption-adder/
 - **PIL/Pillow**: Image and text rendering
 - **OpenCV**: Video processing utilities
 
+## Deployment
+
+### Free Deployment on Render
+
+Deploy this app for free on Render in 5 minutes:
+
+1. **Push your code to GitHub** (already done if you're reading this)
+2. **Sign up at [render.com](https://render.com)** (free account)
+3. **Create new Web Service** → Connect GitHub repo
+4. **Configure**:
+   - Build Command: `apt-get update && apt-get install -y ffmpeg && pip install -r requirements.txt`
+   - Start Command: `gunicorn app:app`
+   - Plan: Free
+5. **Add Environment Variable**: `SECRET_KEY` (generate with `python -c "import secrets; print(secrets.token_hex(32))"`)
+6. **Deploy!** Your app will be live at `https://your-app.onrender.com`
+
+📖 **Detailed instructions**: See [DEPLOY_RENDER.md](DEPLOY_RENDER.md)
+
+**Note**: Free tier spins down after inactivity. First request after idle may take 30-60 seconds.
+
 ## License
 
 This project is open source and available under the MIT License.

@@ -8,7 +8,7 @@ from utils.caption_generator import add_captions_to_video
 from utils.translator import translate_transcription, get_language_code_for_translation
 
 app = Flask(__name__)
-app.secret_key = 'mykey2310'
+app.secret_key = os.environ.get('SECRET_KEY', 'mykey2310-change-in-production')
 
 # Configuration
 UPLOAD_FOLDER = 'static/uploads'
@@ -182,4 +182,6 @@ def download_video(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV') == 'development'
+    app.run(debug=debug, host='0.0.0.0', port=port)
