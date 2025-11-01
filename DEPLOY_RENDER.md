@@ -27,16 +27,12 @@ Fill in the following:
 - **Region**: Choose closest to you (e.g., `Oregon (US West)`)
 - **Branch**: `main`
 - **Root Directory**: Leave empty
-- **Environment**: `Python 3`
-- **Build Command**: 
-  ```bash
-  apt-get update && apt-get install -y ffmpeg && pip install -r requirements.txt
-  ```
-- **Start Command**: 
-  ```bash
-  gunicorn app:app
-  ```
+- **Environment**: **Select `Docker`** (important!)
+- **Dockerfile Path**: `Dockerfile` (should auto-detect)
+- **Docker Build Context**: `.` (current directory)
 - **Plan**: Select **"Free"**
+
+**Note**: We're using Docker to install FFmpeg properly!
 
 ### Step 5: Add Environment Variables
 Scroll down to **"Environment Variables"** section and add:
